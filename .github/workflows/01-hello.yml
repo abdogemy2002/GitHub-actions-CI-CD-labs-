@@ -1,22 +1,19 @@
-# This first workflow is intentionally tiny.
-# It helps students see what a GitHub Actions run looks like.
 name: 01 Hello Workflow
 
 on:
   pull_request:
-    types: [closed]
+    types: 
+      - closed
   push:
     paths:
       - ".github/workflows/01-hello.yml"
-  # Allow a safe manual run from the Actions tab too.
   workflow_dispatch:
 
 jobs:
   say-hello:
-    # GitHub provides a fresh runner for the job.
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
       - name: Say hello
-        # This single step is enough to show a full workflow run.
-        run: echo "Hello from GitHub Actions"
+        run: echo "Hello from GitHub Actions - Merge Confirmed"
