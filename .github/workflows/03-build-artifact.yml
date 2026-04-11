@@ -11,7 +11,7 @@ env:
   ARTIFACT_NAME: tiny-health-app-image
 
 jobs:
-  build-package:
+  test_package:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,23 @@ jobs:
 
       - name: Run tests
         run: python -m unittest discover -s tests -v
+
+  build-package:
+    strategy:
+      matrix:
+        version: ["3.11","3.12"]
+
+    needs: test_package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{matrix.version}}
 
       - name: Set image tag
         id: image-tag
@@ -40,7 +57,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: false
           tags: "${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.image_tag }}"
           outputs: "type=docker,dest=${{ env.IMAGE_TAR }}"
 

@@ -15,6 +15,9 @@ env:
 
 jobs:
   verify:
+    strategy:
+      matrix:
+        python-version: ["3.11",3.12] 
     # Verification stays first because CI should prove the change is safe.
     runs-on: ubuntu-latest
 
@@ -25,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: ${{matrix.python-version}}
 
       - name: Run tests
         run: python -m unittest discover -s tests -v
@@ -54,9 +57,10 @@ jobs:
         # We add a traceable tag and a latest tag to the same image.
         run: |
           docker build \
+            --build-arg BASE_IMAGE="python:3.12-slim" \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
             -t "${IMAGE_NAME}:latest" \
-            .
+            -f Dockerfile.arg-base
 
       - name: Save Docker image as artifact file
         # Save the built image so the deploy job uses the same package.
