@@ -60,7 +60,7 @@ jobs:
             --build-arg BASE_IMAGE="python:3.12-slim" \
             -t "${IMAGE_NAME}:${{ steps.image-tag.outputs.image_tag }}" \
             -t "${IMAGE_NAME}:latest" \
-            -f Dockerfile.arg-base
+            -f Dockerfile.arg-base .
 
       - name: Save Docker image as artifact file
         # Save the built image so the deploy job uses the same package.
