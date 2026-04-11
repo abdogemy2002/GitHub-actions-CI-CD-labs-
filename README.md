@@ -1,5 +1,5 @@
 # GitHub Actions CI/CD Course for Beginners
-
+# hello from gemy 
 ## What This Repository Is For
 
 This is the student repository for a 2-day beginner-friendly CI/CD course.
