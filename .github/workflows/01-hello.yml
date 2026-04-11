@@ -4,9 +4,7 @@ on:
   pull_request:
     types: 
       - closed
-  push:
-    paths:
-      - ".github/workflows/01-hello.yml"
+      
   workflow_dispatch:
 
 jobs:
